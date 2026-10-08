@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="EggDrop — fresh eggs delivered conveniently around KNUST campus.">
+<title>EggDrop — Fresh Eggs. Right At Your Doorstep. No stress.</title>
+
+<style>
+:root{
+  --navy:#123047;
+  --navy-2:#0d2235;
+  --green:#18a884;
+  --green-dark:#0c8c6e;
+  --yellow:#ffcf4a;
+  --orange:#ff9f43;
+  --cream:#fff9ef;
+  --paper:#ffffff;
+  --soft:#f4fbf7;
+  --text:#183044;
+  --muted:#6b7b88;
+  --line:#e7eee9;
+  --danger:#c0392b;
+  --shadow:0 18px 45px rgba(18,48,71,.10);
+  --shadow-hover:0 24px 55px rgba(18,48,71,.16);
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+  background:var(--cream);
+  color:var(--text);
+  overflow-x:hidden;
+}
+button,input,select,textarea{font:inherit}
+a{color:inherit}
+
+/* ---------- Welcome screen ---------- */
+.welcome{
+  position:fixed;
+  inset:0;
+  z-index:100;
+  display:grid;
+  place-items:center;
+  padding:24px;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(255,207,74,.24), transparent 30%),
+    radial-gradient(circle at 85% 30%, rgba(24,168,132,.28), transparent 32%),
+    linear-gradient(135deg,#09263a,#123e55 55%,#0b806b);
+  transition:opacity .45s ease, visibility .45s ease;
+}
+.welcome.hide{opacity:0;visibility:hidden;pointer-events:none}
+.welcome-card{
+  position:relative;
+  width:min(680px,100%);
+  padding:48px 34px 38px;
+  text-align:center;
+  color:white;
+  background:rgba(255,255,255,.11);
+  border:1px solid rgba(255,255,255,.2);
+  border-radius:32px;
+  box-shadow:0 30px 90px rgba(0,0,0,.22);
+  backdrop-filter:blur(15px);
+  overflow:hidden;
+}
+.welcome-card::before,
+.welcome-card::after{
+  content:"";
+  position:absolute;
+  width:150px;
+  height:150px;
+  border-radius:50%;
+  background:rgba(255,255,255,.08);
+}
+.welcome-card::before{top:-75px;left:-65px}
+.welcome-card::after{bottom:-85px;right:-65px}
+.welcome-egg{
+  font-size:82px;
+  display:inline-block;
+  animation:bob 2.8s ease-in-out infinite;
+  filter:drop-shadow(0 15px 20px rgba(0,0,0,.22));
+}
+.welcome-kicker{
+  margin:8px 0 7px;
+  color:#ffe9a1;
+  font-weight:800;
+  letter-spacing:.13em;
+  text-transform:uppercase;
+  font-size:13px;
+}
+.welcome-card h1{
+  margin:0;
+  font-size:clamp(38px,8vw,68px);
+  letter-spacing:-.04em;
+  line-height:1;
+}
+.welcome-card h1 span{color:var(--yellow)}
+.welcome-card p{
+  max-width:520px;
+  margin:18px auto 24px;
+  color:#edf8f5;
+  font-size:18px;
+  line-height:1.65;
+}
+.welcome-btn{
+  border:0;
+  padding:15px 23px;
+  border-radius:15px;
+  background:var(--yellow);
+  color:var(--navy);
+  font-weight:900;
+  cursor:pointer;
+  box-shadow:0 12px 25px rgba(0,0,0,.16);
+  transition:transform .2s ease, box-shadow .2s ease;
+}
+.welcome-btn:hover{transform:translateY(-2px);box-shadow:0 15px 30px rgba(0,0,0,.2)}
+@keyframes bob{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-10px) rotate(2deg)}}
+
+/* ---------- Header ---------- */
+header{
+  position:sticky;
+  top:0;
+  z-index:20;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:20px;
+  padding:15px 6.5%;
+  color:white;
+  background:rgba(13,34,53,.92);
+  border-bottom:1px solid rgba(255,255,255,.08);
+  backdrop-filter:blur(13px);
+}
+.brand{
+  display:flex;
+  align-items:center;
+  gap:9px;
+  font-size:28px;
+  font-weight:950;
+  letter-spacing:-.04em;
+}
+.brand .brand-mark{font-size:25px}
+.brand span{color:var(--yellow)}
+nav{display:flex;align-items:center;gap:26px}
+nav a{
+  color:white;
+  text-decoration:none;
+  font-weight:750;
+  font-size:15px;
+  opacity:.9;
+}
+nav a:hover{color:var(--yellow);opacity:1}
+.cart-btn{
+  border:0;
+  background:var(--yellow);
+  color:var(--navy);
+  font-weight:900;
+  padding:11px 15px;
+  border-radius:13px;
+  cursor:pointer;
+  box-shadow:0 8px 18px rgba(0,0,0,.12);
+}
+
+/* ---------- Hero ---------- */
+.hero{
+  position:relative;
+  min-height:650px;
+  padding:76px 7% 82px;
+  color:white;
+  display:grid;
+  grid-template-columns:1.08fr .92fr;
+  gap:52px;
+  align-items:center;
+  overflow:hidden;
+  background:
+    radial-gradient(circle at 82% 18%, rgba(255,207,74,.20), transparent 24%),
+    radial-gradient(circle at 70% 90%, rgba(24,168,132,.25), transparent 31%),
+    linear-gradient(135deg,#0b2940,#12516a 57%,#0c8e73);
+}
+.hero::before,
+.hero::after{
+  content:"";
+  position:absolute;
+  border-radius:999px;
+  background:rgba(255,255,255,.08);
+  pointer-events:none;
+}
+.hero::before{width:320px;height:320px;right:-95px;top:-80px}
+.hero::after{width:190px;height:190px;left:-95px;bottom:-70px}
+.hero-copy{position:relative;z-index:1}
+.badge{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:8px 12px;
+  border-radius:999px;
+  background:rgba(255,255,255,.12);
+  border:1px solid rgba(255,255,255,.16);
+  font-weight:800;
+  font-size:13px;
+}
+.badge-dot{width:8px;height:8px;border-radius:50%;background:#5ff0bc;box-shadow:0 0 0 5px rgba(95,240,188,.12)}
+.hero h1{
+  margin:18px 0 18px;
+  max-width:720px;
+  font-size:clamp(50px,7vw,88px);
+  line-height:.94;
+  letter-spacing:-.055em;
+}
+.hero h1 span{color:var(--yellow)}
+.hero p{
+  max-width:645px;
+  margin:0;
+  color:#e9f7f3;
+  font-size:19px;
+  line-height:1.7;
+}
+.hero-actions{display:flex;align-items:center;flex-wrap:wrap;gap:12px;margin-top:26px}
+.cta{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:9px;
+  background:var(--yellow);
+  color:var(--navy);
+  padding:14px 20px;
+  border-radius:14px;
+  text-decoration:none;
+  font-weight:900;
+  box-shadow:0 12px 26px rgba(0,0,0,.14);
+}
+.cta-secondary{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:13px 18px;
+  border:1px solid rgba(255,255,255,.24);
+  border-radius:14px;
+  text-decoration:none;
+  font-weight:850;
+  background:rgba(255,255,255,.08);
+}
+.trust-row{
+  display:flex;
+  flex-wrap:wrap;
+  gap:12px 20px;
+  margin-top:25px;
+  color:#d7eee8;
+  font-size:13px;
+  font-weight:700;
+}
+.trust-row span::before{content:"✓";margin-right:6px;color:#69efbb}
+.hero-visual{position:relative;z-index:1;display:grid;place-items:center}
+.hero-card{
+  position:relative;
+  width:min(480px,100%);
+  padding:34px 30px 30px;
+  text-align:center;
+  background:rgba(255,255,255,.13);
+  border:1px solid rgba(255,255,255,.2);
+  border-radius:32px;
+  box-shadow:0 28px 65px rgba(0,0,0,.18);
+  backdrop-filter:blur(10px);
+}
+.egg-stack{font-size:114px;line-height:1;margin:3px 0 17px;filter:drop-shadow(0 16px 17px rgba(0,0,0,.2))}
+.hero-card h2{font-size:25px;line-height:1.18;margin:0 0 10px}
+.hero-card p{font-size:15px;margin:0;color:#e2f2ef}
+.hero-highlights{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:10px;
+  margin-top:24px;
+  padding-top:20px;
+  border-top:1px solid rgba(255,255,255,.16);
+}
+.hero-highlight{
+  display:flex;
+  align-items:center;
+  gap:9px;
+  padding:11px 12px;
+  background:rgba(255,255,255,.10);
+  border:1px solid rgba(255,255,255,.14);
+  border-radius:14px;
+  color:#f3fbf9;
+  font-size:12px;
+  font-weight:800;
+  text-align:left;
+}
+.hero-highlight-icon{
+  flex:0 0 auto;
+  width:30px;
+  height:30px;
+  display:grid;
+  place-items:center;
+  border-radius:10px;
+  background:rgba(255,207,74,.16);
+  font-size:15px;
+}
+
+
+/* ---------- Sections ---------- */
+section{padding:76px 7%}
+.section-title{text-align:center;max-width:700px;margin:0 auto 35px}
+.eyebrow{
+  margin:0 0 9px;
+  font-size:12px;
+  text-transform:uppercase;
+  letter-spacing:.13em;
+  color:var(--green-dark);
+  font-weight:900;
+}
+.section-title h2{font-size:clamp(31px,4vw,44px);margin:0 0 10px;letter-spacing:-.035em}
+.section-title p{margin:0;color:var(--muted);font-size:16px;line-height:1.6}
+
+.products{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;max-width:1180px;margin:auto}
+.product{
+  position:relative;
+  background:var(--paper);
+  border:1px solid var(--line);
+  border-radius:24px;
+  padding:22px;
+  box-shadow:var(--shadow);
+  transition:transform .2s ease, box-shadow .2s ease;
+  overflow:hidden;
+}
+.product::after{content:"";position:absolute;inset:0 0 auto;height:5px;background:linear-gradient(90deg,var(--green),var(--yellow),var(--orange));opacity:.95}
+.product:hover{transform:translateY(-5px);box-shadow:var(--shadow-hover)}
+.product .icon{font-size:50px;min-height:59px}
+.product h3{margin:14px 0 6px;font-size:21px}
+.product p{margin:0;color:var(--muted);line-height:1.45;min-height:46px;font-size:14px}
+.price{font-size:25px;font-weight:950;color:var(--green-dark);margin:14px 0 16px}
+.product button{
+  width:100%;
+  border:0;
+  background:var(--green);
+  color:white;
+  padding:12px;
+  border-radius:12px;
+  font-weight:900;
+  cursor:pointer;
+  transition:background .2s ease,transform .2s ease;
+}
+.product button:hover{background:var(--green-dark);transform:translateY(-1px)}
+
+/* ---------- Why EggDrop ---------- */
+.why{background:#f5fbf7}
+.features{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;max-width:1000px;margin:auto}
+.feature{
+  background:white;
+  border:1px solid var(--line);
+  border-radius:20px;
+  padding:24px;
+}
+.feature-icon{font-size:32px}
+.feature h3{margin:12px 0 7px}
+.feature p{margin:0;color:var(--muted);line-height:1.55;font-size:14px}
+
+/* ---------- Order ---------- */
+.order{background:linear-gradient(180deg,#fffaf0 0%,#f5fbf7 100%)}
+.order-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;max-width:1050px;margin:auto;align-items:start}
+.panel{background:white;padding:27px;border-radius:24px;box-shadow:var(--shadow);border:1px solid var(--line)}
+.panel h3{font-size:21px;margin:0 0 18px}
+.helper{margin:-7px 0 18px;color:var(--muted);font-size:14px;line-height:1.5}
+label{display:block;font-weight:800;margin:14px 0 7px;font-size:14px}
+input,select,textarea{
+  width:100%;
+  padding:13px 13px;
+  border:1px solid #d8e4df;
+  border-radius:12px;
+  outline:none;
+  background:#fbfdfc;
+  color:var(--text);
+}
+input:focus,select:focus,textarea:focus{border-color:var(--green);box-shadow:0 0 0 4px rgba(24,168,132,.10)}
+textarea{min-height:92px;resize:vertical}
+.submit{
+  margin-top:19px;
+  width:100%;
+  border:0;
+  background:var(--navy);
+  color:white;
+  padding:14px;
+  border-radius:13px;
+  font-weight:900;
+  cursor:pointer;
+  transition:transform .2s ease,background .2s ease;
+}
+.submit:hover{background:var(--navy-2);transform:translateY(-1px)}
+.submit:disabled{opacity:.65;cursor:not-allowed;transform:none}
+.cancel-help{
+  margin:15px 0 0;
+  text-align:center;
+  color:var(--muted);
+  font-size:14px;
+  line-height:1.55;
+}
+.cancel-help a{color:var(--green-dark);font-weight:900;text-decoration:none}
+.cancel-help a:hover{text-decoration:underline}
+.status{margin-top:12px;padding:11px;border-radius:11px;display:none;font-weight:750;font-size:14px;line-height:1.45}
+.status.success{display:block;background:#e9f8f1;color:#166534;border:1px solid #b8e3cd}
+.status.error{display:block;background:#fff0ee;color:#991b1b;border:1px solid #efb8af}
+.summary-row{display:flex;justify-content:space-between;gap:15px;padding:11px 0;border-bottom:1px solid var(--line);font-size:14px}
+.remove-btn{border:0;background:none;color:var(--danger);cursor:pointer;font-weight:800;margin-left:6px}
+.total{font-size:22px;font-weight:950;padding-top:16px}
+.empty{color:var(--muted);line-height:1.6}
+.summary-tip{margin-top:18px;padding:13px 14px;border-radius:13px;background:var(--soft);border:1px solid #d7eee5;font-size:13px;color:#376055;line-height:1.5}
+
+/* ---------- Footer ---------- */
+footer{background:var(--navy-2);color:white;padding:38px 7%;text-align:center}
+footer h3{margin:0 0 7px;font-size:24px}
+footer p{margin:7px 0;color:#d8e8e5}
+footer a{color:var(--yellow);font-weight:900;text-decoration:none}
+.small{font-size:12px;color:#a9c0ba}
+
+/* ---------- Toast ---------- */
+.toast{
+  position:fixed;
+  left:50%;
+  bottom:24px;
+  z-index:50;
+  transform:translate(-50%,20px);
+  background:var(--navy-2);
+  color:white;
+  padding:12px 16px;
+  border-radius:13px;
+  box-shadow:0 14px 36px rgba(0,0,0,.2);
+  opacity:0;
+  pointer-events:none;
+  transition:opacity .25s ease,transform .25s ease;
+  font-size:14px;
+  font-weight:800;
+}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+
+@media(max-width:980px){
+  .hero{grid-template-columns:1fr;min-height:auto;padding-top:60px}
+  .hero-visual{margin-top:18px}
+  .products{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:850px){
+  nav{display:none}
+  .order-grid{grid-template-columns:1fr}
+  .features{grid-template-columns:1fr}
+}
+@media(max-width:560px){
+  header{padding:13px 5%}
+  .brand{font-size:23px}
+  .brand .brand-mark{font-size:20px}
+  .cart-btn{padding:10px 12px;font-size:13px}
+  .hero{padding:48px 5% 60px}
+  section{padding:60px 5%}
+  .products{grid-template-columns:1fr 1fr;gap:12px}
+  .product{padding:17px;border-radius:19px}
+  .product .icon{font-size:41px}
+  .product p{min-height:59px;font-size:13px}
+  .price{font-size:21px}
+  .hero-card{padding:28px 20px}
+  .egg-stack{font-size:82px}
+  .hero-highlights{grid-template-columns:1fr}
+  .hero-highlight{font-size:11px}
+  .welcome-card{padding:39px 21px 30px;border-radius:25px}
+  .welcome-card p{font-size:16px}
+}
+</style>
+</head>
+
+<body>
+
+<!-- Welcoming first-visit experience -->
+<div class="welcome" id="welcomeScreen" aria-modal="true" role="dialog">
+  <div class="welcome-card">
+    <div class="welcome-egg">🥚</div>
+    <div class="welcome-kicker">Welcome to campus convenience</div>
+    <h1>Meet <span>EggDrop.</span></h1>
+    <p>Fresh eggs, simple ordering, and doorstep convenience around campus. Pick your pack and let EggDrop handle the drop.</p>
+    <button class="welcome-btn" onclick="enterEggDrop()">Let's get cracking 🥚</button>
+  </div>
+</div>
+
+<header>
+  <div class="brand"><span class="brand-mark">🥚</span> Egg<span>Drop</span></div>
+  <nav>
+    <a href="#shop">Shop</a>
+    <a href="#why">Why EggDrop</a>
+    <a href="#order">Order</a>
+  </nav>
+  <button class="cart-btn" onclick="document.querySelector('#order').scrollIntoView({behavior:'smooth'})">
+    Cart (<span id="cartCount">0</span>)
+  </button>
+</header>
+
+<section class="hero">
+  <div class="hero-copy">
+    <div class="badge"><span class="badge-dot"></span> Built for KNUST students</div>
+    <h1>Fresh eggs.<br><span>Zero stress.</span></h1>
+    <p><strong>EggDrop</strong> brings fresh eggs right to your doorstep on campus. Choose what you need, place your order, and we’ll handle the rest.</p>
+
+    <div class="hero-actions">
+      <a class="cta" href="#shop">Order your eggs <span>→</span></a>
+      <a class="cta-secondary" href="#order">See your cart</a>
+    </div>
+
+    <div class="trust-row">
+      <span>Simple ordering</span>
+      <span>Campus-friendly</span>
+      <span>WhatsApp support</span>
+    </div>
+  </div>
+
+  <div class="hero-visual">
+    <div class="hero-card">
+      <div class="egg-stack">🥚🥚</div>
+      <h2>Fresh Eggs. Right At Your Doorstep. No stress.</h2>
+      <p>One egg, half-dozen, full dozen, or a full tray — order what fits you.</p>
+      <div class="hero-highlights">
+        <div class="hero-highlight">
+          <span class="hero-highlight-icon">✨</span>
+          <span>Fresh & convenient</span>
+        </div>
+        <div class="hero-highlight">
+          <span class="hero-highlight-icon">📍</span>
+          <span>Around KNUST campus</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="shop">
+  <div class="section-title">
+    <p class="eyebrow">Pick your pack</p>
+    <h2>Choose your eggs</h2>
+    <p>Start small or stock up. Add what you need to your cart.</p>
+  </div>
+
+  <div class="products">
+    <article class="product">
+      <div class="icon">🥚</div>
+      <h3>1 Egg</h3>
+      <p>For when you need just one.</p>
+      <div class="price">GH₵ 1.50</div>
+      <button onclick="addToCart('1 Egg',1.5)">Add to cart</button>
+    </article>
+
+    <article class="product">
+      <div class="icon">🥚🥚</div>
+      <h3>6 Eggs</h3>
+      <p>A handy half-dozen for everyday needs.</p>
+      <div class="price">GH₵ 9.00</div>
+      <button onclick="addToCart('6 Eggs',9)">Add to cart</button>
+    </article>
+
+    <article class="product">
+      <div class="icon">🥚🥚🥚</div>
+      <h3>12 Eggs</h3>
+      <p>One full dozen for your room, flat, or hall.</p>
+      <div class="price">GH₵ 18.00</div>
+      <button onclick="addToCart('12 Eggs',18)">Add to cart</button>
+    </article>
+
+    <article class="product">
+      <div class="icon">📦</div>
+      <h3>30 Eggs</h3>
+      <p>A full tray for serious egg lovers.</p>
+      <div class="price">GH₵ 45.00</div>
+      <button onclick="addToCart('30 Eggs',45)">Add to cart</button>
+    </article>
+  </div>
+</section>
+
+<section id="why" class="why">
+  <div class="section-title">
+    <p class="eyebrow">Why EggDrop?</p>
+    <h2>Made for busy campus life</h2>
+    <p><strong>Egg-cellent </strong>service, zero hassle. Your breakfast is just a <strong>"CRACK" </strong> away.</p>
+  </div>
+
+  <div class="features">
+    <article class="feature">
+      <div class="feature-icon">⚡</div>
+      <h3>Easy to order</h3>
+      <p>Choose your pack, enter your delivery details, and submit your order in a few taps.</p>
+    </article>
+    <article class="feature">
+      <div class="feature-icon">📍</div>
+      <h3>Campus focused</h3>
+      <p>Tell us your hall, hostel, room, or delivery point so your order reaches the right place.</p>
+    </article>
+    <article class="feature">
+      <div class="feature-icon">💬</div>
+      <h3>Customer support</h3>
+      <p>Need to correct or cancel a wrongly placed order? Message EggDrop directly on WhatsApp.</p>
+    </article>
+  </div>
+</section>
+
+<section id="order" class="order">
+  <div class="section-title">
+    <p class="eyebrow">Almost there</p>
+    <h2>Place your order</h2>
+    <p>Tell us where to bring your eggs. We’ll get in touch about the next step.</p>
+  </div>
+
+  <div class="order-grid">
+    <div class="panel">
+      <h3>Your details</h3>
+      <p class="helper">Please use a phone number you can be reached on in case we need to confirm anything about your order.</p>
+
+      <label for="name">Name</label>
+      <input id="name" autocomplete="name" placeholder="Your name">
+
+      <label for="phone">Phone number</label>
+      <input id="phone" autocomplete="tel" inputmode="tel" placeholder="024 XXX XXXX">
+
+       <label for="location">
+  Delivery Location
+</label>
+
+<input
+  id="location"
+  name="location"
+  list="deliveryLocations"
+  placeholder="Type or select your hall/hostel"
+  autocomplete="off"
+  required
+>
+
+<datalist id="deliveryLocations">
+  <option value="Brunei Complex">
+  <option value="Baby Brunei">
+  <option value="Old Brunei">
+  <option value="New Brunei">
+  <option value="Hall 7">
+  <option value="SRC hostel">
+  <option value="TEK Credit">
+  <option value="Unity Hall">
+  <option value="Africa Hall">
+  <option value="Republic Hall">
+  <option value="Independence Hall">
+  <option value="Queen's Hall">
+  <option value="University Hall">
+</datalist>
+
+<p style="font-size:13px; color:#64748b; margin-top:7px;">
+  EggDrop currently delivers only to the locations listed above.
+</p>
+
+      <label for="room">Room / Delivery point</label>
+      <input id="room" placeholder="e.g. Room 204 / Block A">
+
+      <label for="method">Fulfilment</label>
+      <select id="method">
+        <option>Delivery</option>
+        <option>Pickup</option>
+      </select>
+
+      <label for="note">Extra note (optional)</label>
+      <textarea id="note" placeholder="Anything we should know?"></textarea>
+
+      <button id="submitBtn" class="submit" onclick="placeOrder()">Place EggDrop Order</button>
+      <div id="status" class="status"></div>
+
+      <p class="cancel-help">
+        Wrong order or need to cancel?
+        <a href="https://wa.me/233593064236?text=Hi%20EggDrop%2C%20I%20want%20to%20cancel%20or%20correct%20an%20order." target="_blank" rel="noopener noreferrer">Message EggDrop on WhatsApp</a>
+        <br><span></span>
+      </p>
+    </div>
+
+    <div class="panel">
+      <h3>Order summary</h3>
+      <div id="summary" class="empty">Your cart is empty. Add some eggs above.</div>
+      <div class="summary-tip">💡 Delivery fee is not included yet. Payment is made after your eggs are delivered.</div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <h3>EggDrop 🥚</h3>
+  <p>Fresh Eggs. Right At Your Doorstep. No stress.</p>
+  <p>WhatsApp: <a href="https://wa.me/233593064236?text=Hi%20EggDrop%2C%20I%20need%20help%20with%20an%20order." target="_blank" rel="noopener noreferrer">059 306 4236</a></p>
+  <p class="small">Your campus egg delivery plug </p>
+</footer>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<!-- EmailJS Browser SDK -->
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@5/dist/email.min.js"></script>
+
+<script>
+const EMAILJS_PUBLIC_KEY = 'rGe1O8xKQd4-nuBgJ';
+const EMAILJS_SERVICE_ID = 'service_eggs';
+const EMAILJS_TEMPLATE_ID = 'template_qzz29xe';
+
+emailjs.init({publicKey: EMAILJS_PUBLIC_KEY});
+
+let cart = [];
+
+function enterEggDrop(){
+  document.getElementById('welcomeScreen').classList.add('hide');
+  try{localStorage.setItem('eggdrop_welcomed','1');}catch(e){}
+  setTimeout(()=>document.getElementById('shop').scrollIntoView({behavior:'smooth'}),180);
+}
+
+function addToCart(name, price){
+  cart.push({name, price});
+  renderCart();
+  showToast(`${name} added to your cart ✓`);
+  document.querySelector('#order').scrollIntoView({behavior:'smooth'});
+}
+
+function removeItem(i){
+  cart.splice(i,1);
+  renderCart();
+}
+
+function renderCart(){
+  document.getElementById('cartCount').textContent = cart.length;
+  const summary = document.getElementById('summary');
+
+  if(!cart.length){
+    summary.className = 'empty';
+    summary.innerHTML = 'Your cart is empty. Add some eggs above.';
+    return;
+  }
+
+  summary.className = '';
+  let total = 0;
+  let html = '';
+
+  cart.forEach((item,index)=>{
+    total += item.price;
+    html += `
+      <div class="summary-row">
+        <span>${item.name}</span>
+        <span>GH₵ ${item.price.toFixed(2)} <button class="remove-btn" onclick="removeItem(${index})" aria-label="Remove ${item.name}">✕</button></span>
+      </div>`;
+  });
+
+  html += `
+    <div class="summary-row">
+      <span>Delivery fee</span>
+      <span>Calculated later</span>
+    </div>
+    <div class="total">Subtotal: GH₵ ${total.toFixed(2)}</div>`;
+
+  summary.innerHTML = html;
+}
+
+function setStatus(message, type){
+  const status = document.getElementById('status');
+  status.textContent = message;
+  status.className = `status ${type}`;
+}
+
+function showToast(message){
+  const toast = document.getElementById('toast');
+  toast.textContent = message;
+  toast.classList.add('show');
+  clearTimeout(window.__eggdropToastTimer);
+  window.__eggdropToastTimer = setTimeout(()=>toast.classList.remove('show'),2200);
+}
+
+function clearOrderForm(){
+  document.getElementById('name').value = '';
+  document.getElementById('phone').value = '';
+  document.getElementById('location').value = '';
+  document.getElementById('room').value = '';
+  document.getElementById('method').value = 'Delivery';
+  document.getElementById('note').value = '';
+  cart = [];
+  renderCart();
+}
+
+async function placeOrder(){
+  if(!cart.length){
+    alert('Please add eggs to your cart first.');
+    return;
+  }
+
+  const name = document.getElementById('name').value.trim();
+  const phone = document.getElementById('phone').value.trim();
+  const location = document.getElementById('location').value.trim();
+  const room = document.getElementById('room').value.trim();
+  const method = document.getElementById('method').value;
+  const note = document.getElementById('note').value.trim();
+
+  if(!name || !phone || !location || !room){
+    alert('Please complete your name, phone number, hall/hostel and delivery point.');
+    return;
+  }
+
+  const items = cart.map(item => `${item.name} — GH₵ ${item.price.toFixed(2)}`).join('\n');
+  const itemNames = cart.map(item => item.name).join(', ');
+  const total = cart.reduce((sum,item) => sum + item.price, 0).toFixed(2);
+  const orderTime = new Date().toLocaleString('en-GH',{dateStyle:'medium',timeStyle:'short'});
+
+  const submitBtn = document.getElementById('submitBtn');
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'Sending order...';
+  setStatus('Sending your order to EggDrop...', 'success');
+
+  const templateParams = {
+    name,
+    customer_name:name,
+    phone,
+    location,
+    room,
+    method,
+    fulfillment:method,
+    note:note || 'None',
+    items,
+    order_items:items,
+    item_names:itemNames,
+    total,
+    subtotal:total,
+    order_time:orderTime,
+    time:orderTime,
+    order_details:`Items:\n${items}\n\nSubtotal: GH₵ ${total}\n\nCustomer: ${name}\nPhone: ${phone}\nHall / Hostel: ${location}\nDelivery point: ${room}\nFulfilment: ${method}\nExtra note: ${note || 'None'}`
+  };
+
+  try{
+    const response = await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams);
+    console.log('EmailJS success:', response.status, response.text);
+    setStatus('Order sent successfully. EggDrop has received your order.', 'success');
+    alert('EggDrop order sent successfully!');
+    clearOrderForm();
+  }catch(error){
+    console.error('EmailJS error:', error);
+    setStatus('We could not send the order. Please check your connection or EmailJS template settings.', 'error');
+    alert('The order could not be sent. Please try again.');
+  }finally{
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'Place EggDrop Order';
+  }
+}
+
+/* Show the welcome screen the first time; keep it available for local testing. */
+try{
+  if(localStorage.getItem('eggdrop_welcomed') === '1'){
+    document.getElementById('welcomeScreen').classList.add('hide');
+  }
+}catch(e){}
+
+renderCart();
+</script>
+</body>
+</html>
